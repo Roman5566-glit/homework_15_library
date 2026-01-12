@@ -1,24 +1,23 @@
 from django.contrib import admin
 from .models import Book
 
+
 class BookAdmin(admin.ModelAdmin):
-    # Відображення колонок у списку
+    # Отображение колонок в списке
     list_display = ('title', 'author', 'price', 'published_date', 'is_available')
 
-    # Фільтри у боковій панелі
+    # Фильтры в боковой панели
     list_filter = ('is_available', 'published_date')
 
-    # Пошук по назві та опису
+    # Поиск по названию и описанию
     search_fields = ('title', 'description')
 
-    # Сортування: спочатку нові книги, потім за назвою
+    # Сортировка: сначала новые книги, затем по названию
     ordering = ('-published_date', 'title')
 
-    # Поля тільки для читання **тільки при редагуванні**
-    def get_readonly_fields(self, request, obj=None):
-        if obj:  # якщо редагуємо існуючий об’єкт
-            return ('price', 'published_date')
-        return ()  # при створенні книги всі поля доступні для редагування
+    # Поля только для чтения (и при создании, и при редактировании)
+    readonly_fields = ('price', 'published_date')
 
-# Реєструємо модель у адмінці
+
+# Регистрируем модель в админ-панели
 admin.site.register(Book, BookAdmin)
